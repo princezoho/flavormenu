@@ -206,22 +206,18 @@ const FlavorName = styled.div<{ fontSize: number; font: string }>`
   padding: 0 2px;
 `;
 
-const GenerateButton = styled.button`
-  background-color: #55B6E7;
+const Button = styled.button`
+  background-color: #007bff;
   color: white;
-  padding: 10px 20px;
   border: none;
-  border-radius: 9999px;
-  cursor: pointer;
+  padding: 10px 20px;
   font-size: 16px;
-  font-weight: 500;
-  display: block;
-  width: fit-content;
-  margin: 10px auto;
-  transition: background-color 0.2s ease;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
 
   &:hover {
-    background-color: #4499cc;
+    background-color: #0056b3;
   }
 `;
 
@@ -315,9 +311,6 @@ const MenuPreview: React.FC<MenuPreviewProps> = ({ data, onGeneratePDF }) => {
             </FlavorGrid>
           </div>
         ))}
-        <GenerateButton onClick={onGeneratePDF}>
-          Generate PDF
-        </GenerateButton>
       </ContentContainer>
     </PreviewContainer>
   );

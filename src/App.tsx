@@ -302,6 +302,33 @@ const BannerControls = styled.div`
   margin-bottom: 20px;
 `;
 
+const PreviewHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+  }
+`;
+
+const ActionButton = styled.button`
+  background-color: #55B6E7;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #4499cc;
+  }
+`;
+
 const App: React.FC = () => {
   const [showPDF, setShowPDF] = useState(false);
   const fontOptions = [
@@ -657,7 +684,12 @@ const App: React.FC = () => {
         </EditorSide>
 
         <PreviewSide>
-          <h2>Live Preview</h2>
+          <PreviewHeader>
+            <h2>Live Preview</h2>
+            <ActionButton onClick={() => setShowPDF(true)}>
+              Generate PDF
+            </ActionButton>
+          </PreviewHeader>
           <PreviewWrapper>
             <PreviewScaler>
               <PreviewContainer>
