@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Paytone+One&family=Fredoka+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Bubblegum+Sans&display=swap');
+
+body {
+  margin: 0;
+  font-family: "Cooper Black", "Poppins", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f0f0;
+}
+
+/* Font face declarations for system fonts */
+@font-face {
+  font-family: 'Cooper Black';
+  src: local('Cooper Black');
+}
+
+@font-face {
+  font-family: 'Futura-Bold';
+  src: local('Futura-Bold'), local('Futura Bold');
+}
+
+@font-face {
+  font-family: 'Helvetica-Black';
+  src: local('Helvetica-Black'), local('Helvetica Black');
+}
+
+@font-face {
+  font-family: 'Chalkboard SE Bold';
+  src: local('Chalkboard SE Bold');
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cooper Black", "Poppins", sans-serif;
+  color: #333;
+}
+
+button {
+  font-family: "Poppins", sans-serif;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #55B6E7;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4499cc;
+}
