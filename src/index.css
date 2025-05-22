@@ -2,6 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Paytone+One&family=Fredoka+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Bubblegum+Sans&display=swap');
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   font-family: "Cooper Black", "Poppins", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

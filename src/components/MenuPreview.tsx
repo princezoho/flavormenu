@@ -206,8 +206,28 @@ const FlavorName = styled.div<{ fontSize: number; font: string }>`
   padding: 0 2px;
 `;
 
+const GenerateButton = styled.button`
+  background-color: #55B6E7;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  display: block;
+  width: fit-content;
+  margin: 10px auto;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #4499cc;
+  }
+`;
+
 interface MenuPreviewProps {
   data: MenuData;
+  onGeneratePDF: () => void;
 }
 
 const Confetti: React.FC<{ config: MenuData['confetti'] }> = ({ config }) => {
@@ -246,7 +266,7 @@ const Confetti: React.FC<{ config: MenuData['confetti'] }> = ({ config }) => {
   return <ConfettiContainer>{confettiElements}</ConfettiContainer>;
 };
 
-const MenuPreview: React.FC<MenuPreviewProps> = ({ data }) => {
+const MenuPreview: React.FC<MenuPreviewProps> = ({ data, onGeneratePDF }) => {
   return (
     <PreviewContainer font={data.font}>
       <Confetti config={data.confetti} />
@@ -295,6 +315,9 @@ const MenuPreview: React.FC<MenuPreviewProps> = ({ data }) => {
             </FlavorGrid>
           </div>
         ))}
+        <GenerateButton onClick={onGeneratePDF}>
+          Generate PDF
+        </GenerateButton>
       </ContentContainer>
     </PreviewContainer>
   );
