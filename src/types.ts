@@ -35,7 +35,8 @@ export interface MenuData {
   font: string;
   flavorImageSize: number;
   flavorSpacing: number; // Gap between flavors in pixels
-  bannerStyle?: 'classic' | 'angled' | 'round' | 'underline';
+  logoSize: number; // max dimension (px)
+  bannerStyle?: 'classic' | 'angled' | 'bubble' | 'wavy';
 }
 
 export const WONDERFUL_FLAVORS: FlavorOption[] = [

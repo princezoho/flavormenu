@@ -98,23 +98,24 @@ const Header = styled.div`
   margin-bottom: 20px;
 `;
 
-const Logo = styled.img`
-  height: 1.5in;
-  max-width: 1.5in;
+const Logo = styled.img<{ size: number }>`
   width: auto;
+  height: auto;
+  max-width: ${props => props.size}px;
+  max-height: ${props => props.size}px;
   object-fit: contain;
   margin-right: 20px;
 `;
 
-const LogoPlaceholder = styled.div`
-  width: 1.5in;
-  height: 1.5in;
+const LogoPlaceholder = styled.div<{ size: number }>`
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
   margin-right: 20px;
   border: 2px dashed #aaa;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: ${props => Math.max(16, props.size * 0.15)}px;
   font-weight: bold;
   color: #333;
   text-align: center;
@@ -150,12 +151,12 @@ const CategoryBanner = styled.div<{ color: string; styleType: string }>`
   text-align: center;
 
   /* Classic */
-  background: ${props => props.styleType === 'classic' ? props.color : 'transparent'};
+  background: ${props => ['classic', 'angled', 'bubble', 'wavy', 'round'].includes(props.styleType) ? props.color : 'transparent'};
   padding: ${props => props.styleType === 'underline' ? '0 10px 18px' : '15px 30px'};
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: ${props => props.styleType === 'round' ? '40px' : '4px'};
+  border-radius: ${props => props.styleType === 'round' || props.styleType === 'bubble' ? '40px' : '4px'};
   box-shadow: ${props => props.styleType === 'underline' ? 'none' : '0 2px 4px rgba(0,0,0,0.1)'};
 
   /* side rules only for classic */
@@ -198,7 +199,31 @@ const CategoryBanner = styled.div<{ color: string; styleType: string }>`
     }
   `}
 
-  /* Round pill already handled with border-radius and no side rules */
+  /* Bubble (pill) */
+  ${props => props.styleType === 'bubble' && `
+    border-radius: 50px;
+  `}
+
+  /* Wavy top & bottom */
+  ${props => props.styleType === 'wavy' && `
+    overflow: hidden;
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: ${props.color};
+    }
+    &:before {
+      top: -10px;
+      border-radius: 50% 50% 0 0;
+    }
+    &:after {
+      bottom: -10px;
+      border-radius: 0 0 50% 50%;
+    }
+  `}
 
   /* Underline variant */
   ${props => props.styleType === 'underline' && `
@@ -318,9 +343,9 @@ const MenuPreview = React.forwardRef<HTMLDivElement, MenuPreviewProps>(({ data }
       <ContentContainer>
         <Header>
           {data.logo ? (
-            <Logo src={URL.createObjectURL(data.logo)} alt="Office Logo" />
+            <Logo src={URL.createObjectURL(data.logo)} alt="Office Logo" size={data.logoSize} />
           ) : (
-            <LogoPlaceholder>{`Your\nLogo\nHere`}</LogoPlaceholder>
+            <LogoPlaceholder size={data.logoSize}>{`Your\nLogo\nHere`}</LogoPlaceholder>
           )}
           {data.officeName && (
             <OfficeName fontSize={data.fontSize.officeName} font={data.font}>

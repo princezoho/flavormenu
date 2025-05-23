@@ -6,7 +6,6 @@ import MenuPreview from './components/MenuPreview';
 import { MenuData, CategoryData } from './types';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import { ImagePool } from '@squoosh/lib';
 
 const AppContainer = styled.div`
   margin: 0;
@@ -331,8 +330,6 @@ const ActionButton = styled.button`
   }
 `;
 
-const imagePool = new ImagePool(navigator.hardwareConcurrency || 2);
-
 const App: React.FC = () => {
   const fontOptions = [
     { label: 'Cooper Black', value: 'Cooper Black' },
@@ -373,6 +370,7 @@ const App: React.FC = () => {
     font: 'Cooper Black',
     flavorImageSize: 400,
     flavorSpacing: -50,
+    logoSize: 450,
     bannerStyle: 'classic'
   });
 
@@ -478,6 +476,13 @@ const App: React.FC = () => {
     }));
   };
 
+  const handleLogoSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const size = parseInt(e.target.value);
+    if (!isNaN(size) && size > 0) {
+      setMenuData(prev => ({ ...prev, logoSize: size }));
+    }
+  };
+
   const renderColorPalette = (colors: string[], isSelected: boolean) => (
     <ColorPalette
       type="button"
@@ -528,25 +533,11 @@ const App: React.FC = () => {
         windowHeight: LETTER_HEIGHT_PX,
       });
 
-      // Compress the PNG with Squoosh (pngquant + oxipng)
-      const rawBuffer: ArrayBuffer = await new Promise((res) => {
-        canvas.toBlob(async (blob) => {
-          res(await blob!.arrayBuffer());
-        }, 'image/png');
-      });
-
-      const squooshImage = imagePool.ingestImage(rawBuffer);
-      await squooshImage.encode({
-        pngquant: { quality: [0.6, 0.8], speed: 3 }
-      });
-      const encoded = squooshImage.encodedWith.pngquant;
-      const compressedUint8 = new Uint8Array(encoded.binary);
-      const base64 = btoa(String.fromCharCode.apply(null, Array.from(compressedUint8)));
-      const imgData = `data:image/png;base64,${base64}`;
-      await imagePool.close();
+      // Convert canvas to high-quality JPEG to shrink final PDF size (much smaller than PNG)
+      const imgData = canvas.toDataURL('image/jpeg', 0.9); // 0.9 quality keeps fidelity while reducing bytes
 
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'in', format: 'letter' });
-      pdf.addImage(imgData, 'PNG', 0, 0, LETTER_WIDTH_INCHES, LETTER_HEIGHT_INCHES);
+      pdf.addImage(imgData, 'JPEG', 0, 0, LETTER_WIDTH_INCHES, LETTER_HEIGHT_INCHES, undefined, 'FAST');
       pdf.save('menu.pdf');
     } finally {
       // Clean up the cloned element
@@ -593,6 +584,17 @@ const App: React.FC = () => {
                 </option>
               ))}
             </FontSelect>
+            <FontSizeControl>
+              <label>Logo Size:</label>
+              <input
+                type="range"
+                min="100"
+                max="600"
+                value={menuData.logoSize}
+                onChange={handleLogoSizeChange}
+              />
+              <span>{menuData.logoSize}px</span>
+            </FontSizeControl>
           </ControlBox>
 
           <ControlBox>
@@ -690,8 +692,8 @@ const App: React.FC = () => {
                   <select value={menuData.bannerStyle} onChange={handleBannerStyleChange} style={{ flex: 1 }}>
                     <option value="classic">Classic</option>
                     <option value="angled">Angled</option>
-                    <option value="round">Round</option>
-                    <option value="underline">Underline</option>
+                    <option value="bubble">Bubble</option>
+                    <option value="wavy">Wavy</option>
                   </select>
                 </ColorControl>
               </BannerControls>
