@@ -6,6 +6,7 @@ import MenuPreview from './components/MenuPreview';
 import { MenuData, CategoryData } from './types';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { ImagePool } from '@squoosh/lib';
 
 const AppContainer = styled.div`
   margin: 0;
@@ -330,6 +331,8 @@ const ActionButton = styled.button`
   }
 `;
 
+const imagePool = new ImagePool(navigator.hardwareConcurrency || 2);
+
 const App: React.FC = () => {
   const fontOptions = [
     { label: 'Cooper Black', value: 'Cooper Black' },
@@ -525,7 +528,23 @@ const App: React.FC = () => {
         windowHeight: LETTER_HEIGHT_PX,
       });
 
-      const imgData = canvas.toDataURL('image/png');
+      // Compress the PNG with Squoosh (pngquant + oxipng)
+      const rawBuffer: ArrayBuffer = await new Promise((res) => {
+        canvas.toBlob(async (blob) => {
+          res(await blob!.arrayBuffer());
+        }, 'image/png');
+      });
+
+      const squooshImage = imagePool.ingestImage(rawBuffer);
+      await squooshImage.encode({
+        pngquant: { quality: [0.6, 0.8], speed: 3 }
+      });
+      const encoded = squooshImage.encodedWith.pngquant;
+      const compressedUint8 = new Uint8Array(encoded.binary);
+      const base64 = btoa(String.fromCharCode.apply(null, Array.from(compressedUint8)));
+      const imgData = `data:image/png;base64,${base64}`;
+      await imagePool.close();
+
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'in', format: 'letter' });
       pdf.addImage(imgData, 'PNG', 0, 0, LETTER_WIDTH_INCHES, LETTER_HEIGHT_INCHES);
       pdf.save('menu.pdf');
