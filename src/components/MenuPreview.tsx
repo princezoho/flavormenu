@@ -146,6 +146,7 @@ const Title = styled.h2<{ fontSize: number; font: string }>`
 const CategoryBanner = styled.div<{ color: string; styleType: string }>`
   margin: 20px 0;
   position: relative;
+  z-index: 0;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -167,8 +168,8 @@ const CategoryBanner = styled.div<{ color: string; styleType: string }>`
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 40px;
-    height: 2px;
+    width: 50px;
+    height: 10px;
     background: ${props => props.color};
   }
   &:before { right: calc(100% + 15px); }
@@ -201,28 +202,15 @@ const CategoryBanner = styled.div<{ color: string; styleType: string }>`
 
   /* Bubble (pill) */
   ${props => props.styleType === 'bubble' && `
-    border-radius: 50px;
+    border-radius: 200px;
   `}
 
   /* Wavy top & bottom */
   ${props => props.styleType === 'wavy' && `
-    overflow: hidden;
-    &:before, &:after {
-      content: '';
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 20px;
-      background: ${props.color};
-    }
-    &:before {
-      top: -10px;
-      border-radius: 50% 50% 0 0;
-    }
-    &:after {
-      bottom: -10px;
-      border-radius: 0 0 50% 50%;
-    }
+    clip-path: url(#waveClip);
+    -webkit-clip-path: url(#waveClip);
+    padding: 100px 60px; /* generous space so large text never touches edges */
+    min-height: 280px;
   `}
 
   /* Underline variant */
@@ -249,6 +237,8 @@ const CategoryTitle = styled.h3<{ fontSize: number; font: string }>`
   text-transform: uppercase;
   font-weight: bold;
   padding: 0 20px;
+  position: relative;
+  z-index: 2;
 `;
 
 const FlavorGrid = styled.div<{ spacing: number }>`
@@ -339,6 +329,15 @@ const Confetti: React.FC<{ config: MenuData['confetti'] }> = ({ config }) => {
 const MenuPreview = React.forwardRef<HTMLDivElement, MenuPreviewProps>(({ data }, ref) => {
   return (
     <PreviewContainer ref={ref} font={data.font}>
+      {/* SVG clip-path definition for wavy banners */}
+      <svg width="0" height="0" style={{ position: 'absolute' }}>
+        <defs>
+          <clipPath id="waveClip" clipPathUnits="objectBoundingBox">
+            {/* Large scalloped rectangle – waves on all 4 edges (10 crests per side) */}
+            <path d="M0,0.12 Q0.05,0 0.10,0.12 Q0.15,0.24 0.20,0.12 Q0.25,0 0.30,0.12 Q0.35,0.24 0.40,0.12 Q0.45,0 0.50,0.12 Q0.55,0.24 0.60,0.12 Q0.65,0 0.70,0.12 Q0.75,0.24 0.80,0.12 Q0.85,0 0.90,0.12 Q0.95,0.24 1,0.12 L1,0.88 Q0.95,1 0.90,0.88 Q0.85,0.76 0.80,0.88 Q0.75,1 0.70,0.88 Q0.65,0.76 0.60,0.88 Q0.55,1 0.50,0.88 Q0.45,0.76 0.40,0.88 Q0.35,1 0.30,0.88 Q0.25,0.76 0.20,0.88 Q0.15,1 0.10,0.88 Q0.05,0.76 0,0.88 Z" />
+          </clipPath>
+        </defs>
+      </svg>
       <Confetti config={data.confetti} />
       <ContentContainer>
         <Header>
