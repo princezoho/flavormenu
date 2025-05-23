@@ -34,6 +34,8 @@ export interface MenuData {
   };
   font: string;
   flavorImageSize: number;
+  flavorSpacing: number; // Gap between flavors in pixels
+  bannerStyle?: 'classic' | 'angled' | 'round' | 'underline';
 }
 
 export const WONDERFUL_FLAVORS: FlavorOption[] = [
@@ -58,6 +60,7 @@ export const WONDERFUL_FLAVORS: FlavorOption[] = [
 
 // Additional emoji flavors as backup options
 export const EMOJI_FLAVORS: FlavorOption[] = [
+  // Prophy Paste Flavors
   { name: 'Apple', emoji: '🍎', category: 'prophy' },
   { name: 'Apricot', emoji: '🍑', category: 'prophy' },
   { name: 'Banana', emoji: '🍌', category: 'prophy' },
@@ -94,5 +97,44 @@ export const EMOJI_FLAVORS: FlavorOption[] = [
   { name: 'Strawberry', emoji: '🍓', category: 'prophy' },
   { name: 'Tangerine', emoji: '🍊', category: 'prophy' },
   { name: 'Vanilla', emoji: '🍦', category: 'prophy' },
-  { name: 'Watermelon', emoji: '🍉', category: 'prophy' }
+  { name: 'Watermelon', emoji: '🍉', category: 'prophy' },
+
+  // Fluoride Varnish Flavors
+  { name: 'Apple', emoji: '🍎', category: 'varnish' },
+  { name: 'Apricot', emoji: '🍑', category: 'varnish' },
+  { name: 'Banana', emoji: '🍌', category: 'varnish' },
+  { name: 'Berry Mix', emoji: '🫐', category: 'varnish' },
+  { name: 'Birthday Cake', emoji: '🎂', category: 'varnish' },
+  { name: 'Blackberry', emoji: '🫐', category: 'varnish' },
+  { name: 'Blueberry', emoji: '🫐', category: 'varnish' },
+  { name: 'Bubblegum', emoji: '🫧', category: 'varnish' },
+  { name: 'Candy', emoji: '🍬', category: 'varnish' },
+  { name: 'Caramel', emoji: '🍯', category: 'varnish' },
+  { name: 'Cherry', emoji: '🍒', category: 'varnish' },
+  { name: 'Chocolate', emoji: '🍫', category: 'varnish' },
+  { name: 'Cinnamon Roll', emoji: '🥮', category: 'varnish' },
+  { name: 'Coconut', emoji: '🥥', category: 'varnish' },
+  { name: 'Coffee', emoji: '☕', category: 'varnish' },
+  { name: 'Cookie', emoji: '🍪', category: 'varnish' },
+  { name: 'Cotton Candy', emoji: '🍭', category: 'varnish' },
+  { name: 'Cupcake', emoji: '🧁', category: 'varnish' },
+  { name: 'Grape', emoji: '🍇', category: 'varnish' },
+  { name: 'Green Apple', emoji: '🍏', category: 'varnish' },
+  { name: 'Honey', emoji: '🍯', category: 'varnish' },
+  { name: 'Ice Cream', emoji: '🍦', category: 'varnish' },
+  { name: 'Kiwi', emoji: '🥝', category: 'varnish' },
+  { name: 'Lemon', emoji: '🍋', category: 'varnish' },
+  { name: 'Lime', emoji: '🍋', category: 'varnish' },
+  { name: 'Mango', emoji: '🥭', category: 'varnish' },
+  { name: 'Maple', emoji: '🍁', category: 'varnish' },
+  { name: 'Orange', emoji: '🍊', category: 'varnish' },
+  { name: 'Peach', emoji: '🍑', category: 'varnish' },
+  { name: 'Pear', emoji: '🍐', category: 'varnish' },
+  { name: 'Pineapple', emoji: '🍍', category: 'varnish' },
+  { name: 'Plum', emoji: '🫐', category: 'varnish' },
+  { name: 'Raspberry', emoji: '🫐', category: 'varnish' },
+  { name: 'Strawberry', emoji: '🍓', category: 'varnish' },
+  { name: 'Tangerine', emoji: '🍊', category: 'varnish' },
+  { name: 'Vanilla', emoji: '🍦', category: 'varnish' },
+  { name: 'Watermelon', emoji: '🍉', category: 'varnish' }
 ]; 

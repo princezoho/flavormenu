@@ -369,7 +369,8 @@ const App: React.FC = () => {
     },
     font: 'Cooper Black',
     flavorImageSize: 400,
-    flavorSpacing: -50
+    flavorSpacing: -50,
+    bannerStyle: 'classic'
   });
 
   const colorPalettes = [
@@ -467,6 +468,13 @@ const App: React.FC = () => {
     }));
   };
 
+  const handleBannerStyleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setMenuData(prev => ({
+      ...prev,
+      bannerStyle: e.target.value as any
+    }));
+  };
+
   const renderColorPalette = (colors: string[], isSelected: boolean) => (
     <ColorPalette
       type="button"
@@ -484,27 +492,47 @@ const App: React.FC = () => {
 
   const generatePDF = async () => {
     if (!previewRef.current) return;
+
+    // Constants
     const LETTER_WIDTH_INCHES = 8.5;
     const LETTER_HEIGHT_INCHES = 11;
     const DPI = 300;
     const LETTER_WIDTH_PX = LETTER_WIDTH_INCHES * DPI;
     const LETTER_HEIGHT_PX = LETTER_HEIGHT_INCHES * DPI;
-    const element = previewRef.current;
-    const originalTransform = element.style.transform;
-    element.style.transform = 'none';
-    const canvas = await html2canvas(element, {
-      scale: 1,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      width: LETTER_WIDTH_PX,
-      height: LETTER_HEIGHT_PX,
-    });
-    element.style.transform = originalTransform;
-    const image = canvas.toDataURL('image/png');
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'in', format: 'letter' });
-    pdf.addImage(image, 'PNG', 0, 0, LETTER_WIDTH_INCHES, LETTER_HEIGHT_INCHES);
-    pdf.save('menu.pdf');
+
+    // Clone the preview so we can move it to the top-left corner without disturbing the UI
+    const original = previewRef.current;
+    const clone = original.cloneNode(true) as HTMLElement;
+    clone.style.transform = 'none';
+    clone.style.position = 'fixed';
+    clone.style.left = '0';
+    clone.style.top = '0';
+    clone.style.margin = '0';
+    clone.style.background = '#ffffff';
+    clone.style.zIndex = '9999';
+
+    document.body.appendChild(clone);
+
+    try {
+      const canvas = await html2canvas(clone, {
+        scale: 1,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null, // keep transparent, clone itself has white bg
+        width: LETTER_WIDTH_PX,
+        height: LETTER_HEIGHT_PX,
+        windowWidth: LETTER_WIDTH_PX,
+        windowHeight: LETTER_HEIGHT_PX,
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'in', format: 'letter' });
+      pdf.addImage(imgData, 'PNG', 0, 0, LETTER_WIDTH_INCHES, LETTER_HEIGHT_INCHES);
+      pdf.save('menu.pdf');
+    } finally {
+      // Clean up the cloned element
+      document.body.removeChild(clone);
+    }
   };
 
   return (
@@ -636,6 +664,16 @@ const App: React.FC = () => {
                     value={menuData.colors.varnishBanner}
                     onChange={(e) => handleColorChange('varnishBanner', e.target.value)}
                   />
+                </ColorControl>
+
+                <ColorControl>
+                  <label>Banner Style:</label>
+                  <select value={menuData.bannerStyle} onChange={handleBannerStyleChange} style={{ flex: 1 }}>
+                    <option value="classic">Classic</option>
+                    <option value="angled">Angled</option>
+                    <option value="round">Round</option>
+                    <option value="underline">Underline</option>
+                  </select>
                 </ColorControl>
               </BannerControls>
             </Settings>

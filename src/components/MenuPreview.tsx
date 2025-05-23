@@ -99,8 +99,9 @@ const Header = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 1.5in;
   height: 1.5in;
+  max-width: 1.5in;
+  width: auto;
   object-fit: contain;
   margin-right: 20px;
 `;
@@ -141,20 +142,27 @@ const Title = styled.h2<{ fontSize: number; font: string }>`
   font-weight: bold;
 `;
 
-const CategoryBanner = styled.div<{ color: string }>`
-  background: ${props => props.color};
-  padding: 15px 30px;
-  margin: 20px auto;
-  width: auto;
-  display: inline-block;
+const CategoryBanner = styled.div<{ color: string; styleType: string }>`
+  margin: 20px 0;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
-  &:before, &:after {
+  text-align: center;
+
+  /* Classic */
+  background: ${props => props.styleType === 'classic' ? props.color : 'transparent'};
+  padding: ${props => props.styleType === 'underline' ? '0 10px 18px' : '15px 30px'};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${props => props.styleType === 'round' ? '40px' : '4px'};
+  box-shadow: ${props => props.styleType === 'underline' ? 'none' : '0 2px 4px rgba(0,0,0,0.1)'};
+
+  /* side rules only for classic */
+  &:before,
+  &:after {
     content: '';
+    display: ${props => props.styleType === 'classic' ? 'block' : 'none'};
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -162,16 +170,49 @@ const CategoryBanner = styled.div<{ color: string }>`
     height: 2px;
     background: ${props => props.color};
   }
-  
-  &:before {
-    right: 100%;
-    margin-right: 15px;
-  }
-  
-  &:after {
-    left: 100%;
-    margin-left: 15px;
-  }
+  &:before { right: calc(100% + 15px); }
+  &:after  { left: calc(100% + 15px); }
+
+  /* Angled ribbon */
+  ${props => props.styleType === 'angled' && `
+    background: ${props.color};
+    padding: 18px 40px;
+    transform: translateX(-50%) skewX(-15deg);
+    & > span { transform: skewX(15deg); }
+    &:before, &:after {
+      display: block;
+      width: 0;
+      height: 0;
+      top: 0;
+      transform: none;
+      border-top: 100% solid transparent;
+      border-bottom: 100% solid transparent;
+    }
+    &:before {
+      right: 100%;
+      border-right: 30px solid ${props.color};
+    }
+    &:after {
+      left: 100%;
+      border-left: 30px solid ${props.color};
+    }
+  `}
+
+  /* Round pill already handled with border-radius and no side rules */
+
+  /* Underline variant */
+  ${props => props.styleType === 'underline' && `
+    background: transparent;
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 8px;
+      background: ${props.color};
+    }
+  `}
 `;
 
 const CategoryTitle = styled.h3<{ fontSize: number; font: string }>`
@@ -219,14 +260,15 @@ const FlavorName = styled.div<{ fontSize: number; font: string }>`
   font-size: ${props => props.fontSize}pt;
   font-family: ${props => props.font};
   color: black;
-  margin-top: 2px;
+  margin-top: 4px;
+  line-height: 1.1;
   text-align: center;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  padding: 0 2px;
+  padding: 0 4px;
 `;
 
 interface MenuPreviewProps {
@@ -293,7 +335,7 @@ const MenuPreview = React.forwardRef<HTMLDivElement, MenuPreviewProps>(({ data }
 
         {data.categories.map((category, index) => (
           <div key={index}>
-            <CategoryBanner color={index === 0 ? data.colors.prophyBanner : data.colors.varnishBanner}>
+            <CategoryBanner color={index === 0 ? data.colors.prophyBanner : data.colors.varnishBanner} styleType={data.bannerStyle || 'classic'}>
               <CategoryTitle fontSize={data.fontSize.categoryTitle} font={data.font}>
                 {category.name || `Category ${index + 1}`}
               </CategoryTitle>
