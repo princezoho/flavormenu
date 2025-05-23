@@ -209,8 +209,8 @@ const CategoryBanner = styled.div<{ color: string; styleType: string }>`
   ${props => props.styleType === 'wavy' && `
     clip-path: url(#waveClip);
     -webkit-clip-path: url(#waveClip);
-    padding: 100px 60px; /* generous space so large text never touches edges */
-    min-height: 280px;
+    padding: 80px 60px; /* reduced height by 20px */
+    min-height: 260px;
   `}
 
   /* Underline variant */
