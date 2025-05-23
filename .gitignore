@@ -26,3 +26,6 @@ yarn-error.log*
 .idea/
 .vscode/
 .vercel
+
+# nested duplicate project
+flavor-menu-maker/

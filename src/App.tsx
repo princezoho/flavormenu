@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import LogoUploader from './components/LogoUploader';
 import CategoryEditor from './components/CategoryEditor';
 import MenuPreview from './components/MenuPreview';
-import PDFGenerator from './components/PDFGenerator';
 import { MenuData, CategoryData } from './types';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 const AppContainer = styled.div`
   margin: 0;
@@ -33,7 +34,7 @@ const PreviewSide = styled.div`
   padding: 20px;
   height: 100%;
   overflow-y: auto;
-  background: white;
+  background: #ddd;
   border-left: 1px solid #eee;
 `;
 
@@ -330,7 +331,6 @@ const ActionButton = styled.button`
 `;
 
 const App: React.FC = () => {
-  const [showPDF, setShowPDF] = useState(false);
   const fontOptions = [
     { label: 'Cooper Black', value: 'Cooper Black' },
     { label: 'Futura Bold', value: 'Futura-Bold' },
@@ -351,10 +351,10 @@ const App: React.FC = () => {
       { name: 'Fluoride Varnish', flavors: [] }
     ],
     fontSize: {
-      officeName: 36,
-      title: 44,
-      categoryTitle: 38,
-      flavorName: 22
+      officeName: 81,
+      title: 71,
+      categoryTitle: 88,
+      flavorName: 38
     },
     colors: {
       prophyBanner: '#55B6E7',
@@ -362,13 +362,14 @@ const App: React.FC = () => {
     },
     confetti: {
       enabled: true,
-      density: 1.9,
-      size: 62,
+      density: 2.3,
+      size: 92,
       shape: 'stars',
       colors: ['#FFD54F', '#FF8A80', '#82B1FF']
     },
     font: 'Cooper Black',
-    flavorImageSize: 200
+    flavorImageSize: 400,
+    flavorSpacing: -50
   });
 
   const colorPalettes = [
@@ -458,6 +459,14 @@ const App: React.FC = () => {
     }
   };
 
+  const handleFlavorSpacingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const spacing = parseInt(e.target.value);
+    setMenuData(prev => ({
+      ...prev,
+      flavorSpacing: spacing
+    }));
+  };
+
   const renderColorPalette = (colors: string[], isSelected: boolean) => (
     <ColorPalette
       type="button"
@@ -470,6 +479,33 @@ const App: React.FC = () => {
       ))}
     </ColorPalette>
   );
+
+  const previewRef = React.useRef<HTMLDivElement>(null);
+
+  const generatePDF = async () => {
+    if (!previewRef.current) return;
+    const LETTER_WIDTH_INCHES = 8.5;
+    const LETTER_HEIGHT_INCHES = 11;
+    const DPI = 300;
+    const LETTER_WIDTH_PX = LETTER_WIDTH_INCHES * DPI;
+    const LETTER_HEIGHT_PX = LETTER_HEIGHT_INCHES * DPI;
+    const element = previewRef.current;
+    const originalTransform = element.style.transform;
+    element.style.transform = 'none';
+    const canvas = await html2canvas(element, {
+      scale: 1,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      width: LETTER_WIDTH_PX,
+      height: LETTER_HEIGHT_PX,
+    });
+    element.style.transform = originalTransform;
+    const image = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'in', format: 'letter' });
+    pdf.addImage(image, 'PNG', 0, 0, LETTER_WIDTH_INCHES, LETTER_HEIGHT_INCHES);
+    pdf.save('menu.pdf');
+  };
 
   return (
     <AppContainer>
@@ -569,6 +605,18 @@ const App: React.FC = () => {
                   max="400"
                 />
                 <span>px</span>
+              </FontSizeControl>
+
+              <FontSizeControl>
+                <label>Flavor Spacing:</label>
+                <input
+                  type="range"
+                  min="-200"
+                  max="200"
+                  value={menuData.flavorSpacing}
+                  onChange={handleFlavorSpacingChange}
+                />
+                <span>{menuData.flavorSpacing}px</span>
               </FontSizeControl>
 
               <BannerControls>
@@ -686,17 +734,14 @@ const App: React.FC = () => {
         <PreviewSide>
           <PreviewHeader>
             <h2>Live Preview</h2>
-            <ActionButton onClick={() => setShowPDF(true)}>
+            <ActionButton onClick={generatePDF}>
               Generate PDF
             </ActionButton>
           </PreviewHeader>
           <PreviewWrapper>
             <PreviewScaler>
               <PreviewContainer>
-                <MenuPreview 
-                  data={menuData} 
-                  onGeneratePDF={() => setShowPDF(true)}
-                />
+                <MenuPreview data={menuData} ref={previewRef} />
               </PreviewContainer>
             </PreviewScaler>
           </PreviewWrapper>

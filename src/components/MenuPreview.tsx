@@ -1,10 +1,17 @@
 import React, { useMemo } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { MenuData } from '../types';
 
+// Constants for US Letter size at 300 DPI
+const LETTER_WIDTH_INCHES = 8.5;
+const LETTER_HEIGHT_INCHES = 11;
+const DPI = 300;
+const LETTER_WIDTH_PX = LETTER_WIDTH_INCHES * DPI;
+const LETTER_HEIGHT_PX = LETTER_HEIGHT_INCHES * DPI;
+
 const PreviewContainer = styled.div<{ font: string }>`
-  width: 100%;
-  height: 100%;
+  width: ${LETTER_WIDTH_PX}px;
+  height: ${LETTER_HEIGHT_PX}px;
   background: white;
   padding: 0.5in;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -12,7 +19,7 @@ const PreviewContainer = styled.div<{ font: string }>`
   font-weight: bold;
   position: relative;
   transform-origin: top left;
-  transform: scale(0.6);
+  transform: scale(0.25);
   overflow: hidden;
   margin-left: 0;
 `;
@@ -92,10 +99,26 @@ const Header = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 1in;
-  height: 1in;
+  width: 1.5in;
+  height: 1.5in;
   object-fit: contain;
   margin-right: 20px;
+`;
+
+const LogoPlaceholder = styled.div`
+  width: 1.5in;
+  height: 1.5in;
+  margin-right: 20px;
+  border: 2px dashed #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  white-space: pre-line;
+  box-sizing: border-box;
 `;
 
 const OfficeName = styled.h1<{ fontSize: number; font: string }>`
@@ -162,12 +185,12 @@ const CategoryTitle = styled.h3<{ fontSize: number; font: string }>`
   padding: 0 20px;
 `;
 
-const FlavorGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
-  margin: 8px 0;
+const FlavorGrid = styled.div<{ spacing: number }>`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
+  margin: 8px auto;
 `;
 
 const FlavorCard = styled.div`
@@ -175,12 +198,12 @@ const FlavorCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  height: 100%;
+  justify-content: center;
   padding: 2px;
+  box-sizing: border-box;
 `;
 
-const FlavorImage = styled.img<{ size: number }>`
+const FlavorImage = styled.img<{ size: number; crossOrigin: string }>`
   width: ${props => props.size}px;
   height: ${props => props.size}px;
   object-fit: contain;
@@ -206,24 +229,8 @@ const FlavorName = styled.div<{ fontSize: number; font: string }>`
   padding: 0 2px;
 `;
 
-const Button = styled.button`
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
 interface MenuPreviewProps {
   data: MenuData;
-  onGeneratePDF: () => void;
 }
 
 const Confetti: React.FC<{ config: MenuData['confetti'] }> = ({ config }) => {
@@ -262,16 +269,17 @@ const Confetti: React.FC<{ config: MenuData['confetti'] }> = ({ config }) => {
   return <ConfettiContainer>{confettiElements}</ConfettiContainer>;
 };
 
-const MenuPreview: React.FC<MenuPreviewProps> = ({ data, onGeneratePDF }) => {
+const MenuPreview = React.forwardRef<HTMLDivElement, MenuPreviewProps>(({ data }, ref) => {
   return (
-    <PreviewContainer font={data.font}>
+    <PreviewContainer ref={ref} font={data.font}>
       <Confetti config={data.confetti} />
       <ContentContainer>
         <Header>
-          <Logo 
-            src={data.logo ? URL.createObjectURL(data.logo) : '/temp logo/wonderful_cone.png'} 
-            alt="Office Logo" 
-          />
+          {data.logo ? (
+            <Logo src={URL.createObjectURL(data.logo)} alt="Office Logo" />
+          ) : (
+            <LogoPlaceholder>{`Your\nLogo\nHere`}</LogoPlaceholder>
+          )}
           {data.officeName && (
             <OfficeName fontSize={data.fontSize.officeName} font={data.font}>
               {data.officeName}
@@ -291,29 +299,43 @@ const MenuPreview: React.FC<MenuPreviewProps> = ({ data, onGeneratePDF }) => {
               </CategoryTitle>
             </CategoryBanner>
 
-            <FlavorGrid>
-              {category.flavors.map((flavor, flavorIndex) => (
-                <FlavorCard key={flavorIndex}>
-                  {flavor.image ? (
-                    <FlavorImage 
-                      src={`/images/${flavor.image}`}
-                      alt={flavor.name}
-                      size={data.flavorImageSize}
-                    />
-                  ) : (
-                    <FlavorEmoji size={data.flavorImageSize}>{flavor.emoji}</FlavorEmoji>
-                  )}
-                  <FlavorName fontSize={data.fontSize.flavorName} font={data.font}>
-                    {flavor.name}
-                  </FlavorName>
-                </FlavorCard>
-              ))}
-            </FlavorGrid>
+            {(() => {
+              const rows = [] as JSX.Element[];
+              for (let i = 0; i < category.flavors.length; i += 4) {
+                const rowFlavors = category.flavors.slice(i, i + 4);
+                const rowCount = rowFlavors.length;
+                rows.push(
+                  <FlavorGrid key={i} spacing={data.flavorSpacing}>
+                    {rowFlavors.map((flavor, col) => {
+                      const half = data.flavorSpacing / 2;
+                      return (
+                        <FlavorCard key={col} style={{ margin: `0 ${half}px` }}>
+                          {flavor.image ? (
+                            <FlavorImage
+                              src={`/images/${flavor.image}`}
+                              alt={flavor.name}
+                              size={data.flavorImageSize}
+                              crossOrigin="anonymous"
+                            />
+                          ) : (
+                            <FlavorEmoji size={data.flavorImageSize}>{flavor.emoji}</FlavorEmoji>
+                          )}
+                          <FlavorName fontSize={data.fontSize.flavorName} font={data.font}>
+                            {flavor.name}
+                          </FlavorName>
+                        </FlavorCard>
+                      );
+                    })}
+                  </FlavorGrid>
+                );
+              }
+              return rows;
+            })()}
           </div>
         ))}
       </ContentContainer>
     </PreviewContainer>
   );
-};
+});
 
 export default MenuPreview; 
