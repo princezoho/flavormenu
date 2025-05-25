@@ -11,25 +11,27 @@ import wonderfulLogo from './wonderful-logo.webp';
 const AppContainer = styled.div`
   margin: 0;
   padding: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  height: 100%;
 `;
 
 const MainContent = styled.div`
   display: flex;
-  height: calc(100vh - 0px); // Account for header
-  overflow: hidden; // Prevent body scroll
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  background: #ddd;
 `;
 
 const EditorSide = styled.div`
-  flex: 0 0 40%;
+  flex: 1 1 40%;
+  min-width: 520px;
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 0;
   padding-left: 20px;
   padding-right: 20px;
   overflow-y: auto;
-  height: 100%;
+  height: auto;
   background: #f5f5f5;
   font-family: 'Helvetica Now', sans-serif;
 
@@ -140,7 +142,7 @@ const PreviewScaler = styled.div`
 
 const PreviewContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 1300px;
   position: relative;
 `;
 

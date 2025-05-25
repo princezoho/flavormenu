@@ -9,6 +9,10 @@ const CategoryContainer = styled.div`
   min-width: 0;
   overflow: hidden;
 
+  :last-child {
+    margin-bottom: 0;
+  }
+
   h4 {
     font-family: 'Helvetica Now', sans-serif;
     font-weight: bold;
