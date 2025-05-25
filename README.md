@@ -4,8 +4,8 @@ A React-based web application for creating customizable dental flavor menus. Thi
 
 ## URLs
 
-Wonderful Dental Subdomain: https://flavormenu.wonderfuldental.com/ 
-Netlify built: https://wonderfulflavormenu.netlify.app/
+ - Wonderful Dental Subdomain: https://flavormenu.wonderfuldental.com/ 
+ - Netlify built: https://wonderfulflavormenu.netlify.app/
 
 ## Features
 
