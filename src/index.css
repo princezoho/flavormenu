@@ -1,6 +1,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Paytone+One&family=Fredoka+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Luckiest+Guy&family=Bubblegum+Sans&display=swap');
+@import url('./fonts/helvetica-now/addHelveticaNow.css');
+@import url('./fonts/lemonmilk/addLemonmilk.css');
+
+/* Helvetica Now Fonts */
+@font-face {
+  font-family: 'Helvetica Now';
+  src: url('./fonts/helvetica-now/HelveticaNowText-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Now';
+  src: url('./fonts/helvetica-now/HelveticaNowText-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Helvetica Now';
+  src: url('./fonts/helvetica-now/HelveticaNowText-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Lemonmilk Fonts */
+@font-face {
+  font-family: 'LEMON MILK';
+  src: url('./fonts/lemonmilk/LEMONMILK-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LEMON MILK';
+  src: url('./fonts/lemonmilk/LEMONMILK-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 
 html, body, #root {
   height: 100%;

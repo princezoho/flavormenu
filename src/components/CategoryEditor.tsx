@@ -9,6 +9,12 @@ const CategoryContainer = styled.div`
   border-radius: 8px;
   min-width: 0;
   overflow: hidden;
+
+  h4 {
+    font-family: 'Helvetica Now', sans-serif;
+    font-weight: bold;
+    margin: 15px 0 10px;
+  }
 `;
 
 const CategoryHeader = styled.div`
@@ -118,15 +124,31 @@ const Select = styled.select`
 `;
 
 const Button = styled.button`
-  padding: 8px 16px;
-  background-color: #55B6E7;
-  color: white;
-  border: none;
-  border-radius: 4px;
   cursor: pointer;
+  position: relative;
+  text-transform: uppercase;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 10px 1rem;
+  font-size: 14px;
+  background-color: #00cbff;
+  color: #000;
+  border: 3px solid black;
+  border-radius: 100px;
+  text-decoration: none;
+  overflow: visible;
+  font-family: 'LEMON MILK Medium', 'LEMON MILK', sans-serif;
+  width: max-content;
+  font-weight: 400;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  &:hover {
-    background-color: #4499cc;
+  &:hover,
+  &:focus-visible {
+    background: #caf0ff;
+    transform: scale(1.1);
   }
 `;
 

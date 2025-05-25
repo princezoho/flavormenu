@@ -6,6 +6,7 @@ import MenuPreview from './components/MenuPreview';
 import { MenuData, CategoryData } from './types';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import wonderfulLogo from './wonderful-logo.webp';
 
 const AppContainer = styled.div`
   margin: 0;
@@ -27,6 +28,12 @@ const EditorSide = styled.div`
   overflow-y: auto;
   height: 100%;
   background: #f5f5f5;
+  font-family: 'Helvetica Now', sans-serif;
+
+  h2, h3 {
+    font-family: 'Helvetica Now', sans-serif;
+    font-weight: bold;
+  }
 `;
 
 const PreviewSide = styled.div`
@@ -36,14 +43,47 @@ const PreviewSide = styled.div`
   overflow-y: auto;
   background: #ddd;
   border-left: 1px solid #eee;
+  font-family: 'Helvetica Now', sans-serif;
+
+  h2, h3 {
+    font-family: 'Helvetica Now', sans-serif;
+    font-weight: bold;
+  }
 `;
 
 const Header = styled.h1`
-  padding: 20px;
+  padding: 20px 40px;
   margin: 0;
   background: white;
   border-bottom: 1px solid #eee;
   height: 40px;
+  font-family: 'LEMON MILK', sans-serif;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const HeaderTitle = styled.span`
+  font-family: 'LEMON MILK', sans-serif;
+  font-weight: 300;
+`;
+
+const LogoLink = styled.a`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.4s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+const Logo = styled.img`
+  height: 28px;
+  width: auto;
+  object-fit: contain;
 `;
 
 const EditorContainer = styled.div`
@@ -120,6 +160,8 @@ const SettingsGroup = styled.div`
 const SettingsTitle = styled.h3`
   margin-bottom: 15px;
   color: #333;
+  font-family: 'LEMON MILK', sans-serif;
+  font-weight: 300;
 `;
 
 const Settings = styled.div`
@@ -135,6 +177,7 @@ const Input = styled.input`
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-family: 'Helvetica Now', sans-serif;
 `;
 
 const ColorControl = styled.div`
@@ -145,6 +188,7 @@ const ColorControl = styled.div`
 
   label {
     min-width: 120px;
+    font-family: 'Helvetica Now', sans-serif;
   }
 
   input[type="color"] {
@@ -155,24 +199,30 @@ const ColorControl = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: #55B6E7;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 9999px;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  display: block;
-  width: fit-content;
-  margin: 0 auto;
-  transform: scale(1);
-  transition: background-color 0.2s ease;
   position: relative;
-  top: -80px;
+  text-transform: uppercase;
+  margin-top: 5px;
+  padding: 10px 2rem;
+  font-size: 18px;
+  background-color: #00cbff;
+  color: #000;
+  border: 3px solid black;
+  border-radius: 100px;
+  text-decoration: none;
+  overflow: visible;
+  font-family: 'LEMON MILK Medium', 'LEMON MILK', sans-serif;
+  width: max-content;
+  font-weight: 400;
+  transition: all 0.7s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0;
+  margin-right: 0;
 
   &:hover {
-    background-color: #4499cc;
+    filter: brightness(0.95);
   }
 `;
 
@@ -191,6 +241,7 @@ const FontSizeControl = styled.div`
 
   label {
     min-width: 120px;
+    font-family: 'Helvetica Now', sans-serif;
   }
 
   input {
@@ -214,6 +265,7 @@ const SliderControl = styled.div`
   label {
     min-width: 90px;
     font-size: 13px;
+    font-family: 'Helvetica Now', sans-serif;
   }
 
   input[type="range"] {
@@ -229,6 +281,7 @@ const SliderControl = styled.div`
     min-width: 40px;
     text-align: right;
     font-size: 13px;
+    font-family: 'Helvetica Now', sans-serif;
   }
 `;
 
@@ -249,6 +302,7 @@ const ColorPalette = styled.button<{ colors: string[]; isSelected: boolean }>`
   cursor: pointer;
   padding: 0;
   background: none;
+  font-family: 'Helvetica Now', sans-serif;
 
   ${props => props.colors.map((color, i) => `
     &:after:nth-child(${i + 1}) {
@@ -283,6 +337,7 @@ const ShapeButton = styled.button<{ isSelected: boolean }>`
   background: white;
   cursor: pointer;
   flex: 1;
+  font-family: 'Helvetica Now', sans-serif;
 
   &:hover {
     border-color: #55B6E7;
@@ -297,6 +352,7 @@ const FontSelect = styled.select`
   border-radius: 4px;
   font-size: 16px;
   font-weight: bold;
+  font-family: 'Helvetica Now', sans-serif;
 `;
 
 const BannerControls = styled.div`
@@ -308,25 +364,41 @@ const PreviewHeader = styled.div`
   align-items: center;
   gap: 20px;
   margin-bottom: 20px;
+  font-family: 'Helvetica Now', sans-serif;
 
   h2 {
     margin: 0;
+    font-family: 'LEMON MILK', sans-serif;
+    font-weight: 300;
   }
 `;
 
 const ActionButton = styled.button`
-  background-color: #55B6E7;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 9999px;
   cursor: pointer;
-  font-size: 17px;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+  position: relative;
+  text-transform: uppercase;
+  padding: 10px 2rem;
+  font-size: 18px;
+  background-color: #00cbff;
+  color: #000;
+  border: 3px solid black;
+  border-radius: 100px;
+  text-decoration: none;
+  overflow: visible;
+  font-family: 'LEMON MILK Medium', 'LEMON MILK', sans-serif;
+  width: max-content;
+  font-weight: 400;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0;
+  margin-right: 0;
 
-  &:hover {
-    background-color: #4499cc;
+  &:hover,
+  &:focus-visible {
+    background: #caf0ff;
+    transform: scale(1.1);
   }
 `;
 
@@ -547,7 +619,12 @@ const App: React.FC = () => {
 
   return (
     <AppContainer>
-      <Header>Wonderful Dental Menu Maker</Header>
+      <Header>
+        <HeaderTitle>Wonderful Dental Menu Maker</HeaderTitle>
+        <LogoLink href='https://wonderfuldental.com/' target='_blank' rel='noopener noreferrer'>
+          <Logo src={wonderfulLogo} alt='Wonderful Dental Logo' />
+        </LogoLink>
+      </Header>
       <MainContent>
         <EditorSide>
           <h2>Menu Editor</h2>
