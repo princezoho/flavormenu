@@ -5,7 +5,6 @@ import { CategoryData, FlavorOption, WONDERFUL_FLAVORS, EMOJI_FLAVORS } from '..
 const CategoryContainer = styled.div`
   margin: 12px 0;
   padding: 12px;
-  border: 1px solid #eee;
   border-radius: 8px;
   min-width: 0;
   overflow: hidden;
@@ -210,6 +209,7 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({ category, onChange, ind
   return (
     <CategoryContainer>
       <CategoryHeader>
+        <span style={{ fontWeight: 600, marginRight: 8 }}>Category #{index + 1}</span>
         <Input
           type="text"
           value={category.name}

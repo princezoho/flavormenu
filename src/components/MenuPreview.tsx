@@ -15,7 +15,7 @@ const PreviewContainer = styled.div<{ font: string }>`
   background: white;
   padding: 0.5in;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  font-family: ${props => props.font};
+  font-family: ${props => props.font} !important;
   font-weight: bold;
   position: relative;
   transform-origin: top left;
@@ -125,7 +125,7 @@ const LogoPlaceholder = styled.div<{ size: number }>`
 
 const OfficeName = styled.h1<{ fontSize: number; font: string }>`
   font-size: ${props => props.fontSize}pt;
-  font-family: ${props => props.font};
+  font-family: ${props => props.font} !important;
   margin: 0;
   color: black;
   font-weight: bold;
@@ -136,7 +136,7 @@ const OfficeName = styled.h1<{ fontSize: number; font: string }>`
 
 const Title = styled.h2<{ fontSize: number; font: string }>`
   font-size: ${props => props.fontSize}pt;
-  font-family: ${props => props.font};
+  font-family: ${props => props.font} !important;
   text-align: center;
   margin: 20px 0;
   color: black;
@@ -230,7 +230,7 @@ const CategoryBanner = styled.div<{ color: string; styleType: string }>`
 
 const CategoryTitle = styled.h3<{ fontSize: number; font: string }>`
   font-size: ${props => props.fontSize}pt;
-  font-family: ${props => props.font};
+  font-family: ${props => props.font} !important;
   text-align: center;
   margin: 0;
   color: white;
@@ -273,7 +273,7 @@ const FlavorEmoji = styled.div<{ size: number }>`
 
 const FlavorName = styled.div<{ fontSize: number; font: string }>`
   font-size: ${props => props.fontSize}pt;
-  font-family: ${props => props.font};
+  font-family: ${props => props.font} !important;
   color: black;
   margin-top: 4px;
   line-height: 1.1;

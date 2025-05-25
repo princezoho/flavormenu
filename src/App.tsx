@@ -24,7 +24,10 @@ const MainContent = styled.div`
 
 const EditorSide = styled.div`
   flex: 0 0 40%;
-  padding: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
   overflow-y: auto;
   height: 100%;
   background: #f5f5f5;
@@ -33,6 +36,8 @@ const EditorSide = styled.div`
   h2, h3 {
     font-family: 'Helvetica Now', sans-serif;
     font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 6px;
   }
 `;
 
@@ -147,18 +152,23 @@ const ControlsRow = styled.div`
 `;
 
 const ControlBox = styled.div`
-  padding: 15px;
-  border: 1px solid #eee;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-radius: 8px;
-  margin-bottom: 15px;
-`;
-
-const SettingsGroup = styled.div`
+  margin-top: 0;
   margin-bottom: 20px;
 `;
 
+const SettingsGroup = styled.div`
+  margin-top: 0;
+  margin-bottom: 6px;
+`;
+
 const SettingsTitle = styled.h3`
-  margin-bottom: 15px;
+  margin-top: 0;
+  margin-bottom: 6px;
   color: #333;
   font-family: 'LEMON MILK', sans-serif;
   font-weight: 300;
@@ -168,7 +178,8 @@ const Settings = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  margin-bottom: 15px;
+  margin-top: 0;
+  margin-bottom: 6px;
 `;
 
 const Input = styled.input`
@@ -227,16 +238,20 @@ const Button = styled.button`
 `;
 
 const FontSizeControls = styled.div`
-  margin: 20px 0;
-  padding: 15px;
-  border: 1px solid #eee;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-radius: 8px;
 `;
 
 const FontSizeControl = styled.div`
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  margin-top: 4px;
+  margin-bottom: 4px;
   gap: 10px;
 
   label {
@@ -250,20 +265,24 @@ const FontSizeControl = styled.div`
 `;
 
 const ConfettiControls = styled.div`
-  margin: 20px 0;
-  padding: 15px;
-  border: 1px solid #eee;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-radius: 8px;
 `;
 
 const SliderControl = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 6px 0;
+  gap: 10px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 
   label {
-    min-width: 90px;
+    min-width: 50px;
     font-size: 13px;
     font-family: 'Helvetica Now', sans-serif;
   }
@@ -289,7 +308,8 @@ const ColorPalettes = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  margin: 10px 0;
+  margin-top: 4px;
+  margin-bottom: 4px;
 `;
 
 const ColorPalette = styled.button<{ colors: string[]; isSelected: boolean }>`
@@ -327,7 +347,8 @@ const ColorStrip = styled.div<{ color: string }>`
 const ShapeSelector = styled.div`
   display: flex;
   gap: 10px;
-  margin: 10px 0;
+  margin-top: 4px;
+  margin-bottom: 4px;
 `;
 
 const ShapeButton = styled.button<{ isSelected: boolean }>`
@@ -356,7 +377,7 @@ const FontSelect = styled.select`
 `;
 
 const BannerControls = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 `;
 
 const PreviewHeader = styled.div`
@@ -400,6 +421,14 @@ const ActionButton = styled.button`
     background: #caf0ff;
     transform: scale(1.1);
   }
+`;
+
+// Add a flex row for the background decoration title and enable control
+const BackgroundDecorationRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 const App: React.FC = () => {
@@ -627,7 +656,6 @@ const App: React.FC = () => {
       </Header>
       <MainContent>
         <EditorSide>
-          <h2>Menu Editor</h2>
           <ControlBox>
             <SettingsTitle>Basic Settings</SettingsTitle>
             <LogoUploader
@@ -778,15 +806,17 @@ const App: React.FC = () => {
           </ControlBox>
 
           <ControlBox>
-            <SettingsTitle>Background Decoration</SettingsTitle>
-            <SliderControl>
-              <label>Enable:</label>
-              <input
-                type="checkbox"
-                checked={menuData.confetti.enabled}
-                onChange={(e) => handleConfettiChange('enabled', e.target.checked)}
-              />
-            </SliderControl>
+            <BackgroundDecorationRow>
+              <SettingsTitle style={{ marginBottom: 0 }}>Background Decoration</SettingsTitle>
+              <SliderControl style={{ marginBottom: 0, marginTop: 0 }}>
+                <label style={{ minWidth: 'auto' }}>Enable:</label>
+                <input
+                  type="checkbox"
+                  checked={menuData.confetti.enabled}
+                  onChange={(e) => handleConfettiChange('enabled', e.target.checked)}
+                />
+              </SliderControl>
+            </BackgroundDecorationRow>
             
             {menuData.confetti.enabled && (
               <>
@@ -856,7 +886,7 @@ const App: React.FC = () => {
             )}
           </ControlBox>
 
-          <h3>Categories</h3>
+          {/* <h3>Categories</h3> */}
           {menuData.categories.map((category, index) => (
             <CategoryEditor
               key={index}

@@ -8,7 +8,7 @@ const DropzoneContainer = styled.div`
   padding: 20px;
   text-align: center;
   cursor: pointer;
-  margin: 20px 0;
+  margin: 10px 0;
   
   &:hover {
     border-color: #55B6E7;
