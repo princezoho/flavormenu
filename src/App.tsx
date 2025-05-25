@@ -18,7 +18,7 @@ const AppContainer = styled.div`
 
 const MainContent = styled.div`
   display: flex;
-  height: calc(100vh - 80px); // Account for header
+  height: calc(100vh - 0px); // Account for header
   overflow: hidden; // Prevent body scroll
 `;
 
@@ -648,12 +648,12 @@ const App: React.FC = () => {
 
   return (
     <AppContainer>
-      <Header>
+      {/* <Header>
         <HeaderTitle>Wonderful Dental Menu Maker</HeaderTitle>
         <LogoLink href='https://wonderfuldental.com/' target='_blank' rel='noopener noreferrer'>
           <Logo src={wonderfulLogo} alt='Wonderful Dental Logo' />
         </LogoLink>
-      </Header>
+      </Header> */}
       <MainContent>
         <EditorSide>
           <ControlBox>
