@@ -2,6 +2,11 @@
 
 A React-based web application for creating customizable dental flavor menus. This tool allows dental offices to create beautiful, printable menus for their patients to choose flavors for prophy paste and fluoride varnish treatments.
 
+## URLs
+
+Wonderful Dental Subdomain:
+Netlify built: https://wonderfulflavormenu.netlify.app/
+
 ## Features
 
 - Drag & drop logo upload
