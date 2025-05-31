@@ -12,7 +12,7 @@ const AppContainer = styled.div`
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
 `;
 
 const MainContent = styled.div`
@@ -31,7 +31,7 @@ const EditorSide = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   overflow-y: auto;
-  height: auto;
+  height: 100vh;
   background: #f5f5f5;
   font-family: 'Helvetica Now', sans-serif;
 
@@ -46,11 +46,13 @@ const EditorSide = styled.div`
 const PreviewSide = styled.div`
   flex: 0 0 60%;
   padding: 20px;
-  height: 100%;
-  overflow-y: auto;
+  height: 100vh;
+  overflow: hidden;
   background: #ddd;
   border-left: 1px solid #eee;
   font-family: 'Helvetica Now', sans-serif;
+  position: sticky;
+  top: 0;
 
   h2, h3 {
     font-family: 'Helvetica Now', sans-serif;
@@ -129,6 +131,7 @@ const PreviewWrapper = styled.div`
   height: 100%;
   overflow: auto;
   padding-bottom: 20px;
+  overflow-x: hidden;
 `;
 
 const PreviewScaler = styled.div`
@@ -437,7 +440,7 @@ const App: React.FC = () => {
   const fontOptions = [
     { label: 'Cooper Black', value: 'Cooper Black' },
     { label: 'Futura Bold', value: 'Futura-Bold' },
-    { label: 'Helvetica Black', value: 'Helvetica-Black' },
+    { label: 'Helvetica Now', value: 'Helvetica Now' },
     { label: 'Paytone One', value: 'Paytone One' },
     { label: 'Fredoka One', value: 'Fredoka One' },
     { label: 'Chalkboard SE Bold', value: 'Chalkboard SE Bold' },
@@ -800,7 +803,6 @@ const App: React.FC = () => {
                     <option value="classic">Classic</option>
                     <option value="angled">Angled</option>
                     <option value="bubble">Bubble</option>
-                    <option value="wavy">Wavy</option>
                   </select>
                 </ColorControl>
               </BannerControls>
