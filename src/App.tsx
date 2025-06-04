@@ -436,6 +436,26 @@ const BackgroundDecorationRow = styled.div`
   margin-bottom: 20px;
 `;
 
+// flavor menu event type for GA4 tracking
+type FlavorMenuEvent = {
+  event: 'flavormenu_created';
+};
+
+// extending the Window object to support dataLayer
+declare global {
+  interface Window {
+    dataLayer: FlavorMenuEvent[];
+  }
+}
+
+// initializing dataLayer
+window.dataLayer = window.dataLayer || [];
+
+// event data to be send to GTM
+const eventData: FlavorMenuEvent = {
+  event: 'flavormenu_created',
+};
+
 const App: React.FC = () => {
   const fontOptions = [
     { label: 'Cooper Black', value: 'Cooper Black' },
@@ -645,6 +665,9 @@ const App: React.FC = () => {
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'in', format: 'letter' });
       pdf.addImage(imgData, 'JPEG', 0, 0, LETTER_WIDTH_INCHES, LETTER_HEIGHT_INCHES, undefined, 'FAST');
       pdf.save('menu.pdf');
+
+      // send event data to GTM
+      window.dataLayer.push(eventData);
     } finally {
       // Clean up the cloned element
       document.body.removeChild(clone);
