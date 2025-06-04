@@ -145,7 +145,7 @@ const PreviewScaler = styled.div`
 
 const PreviewContainer = styled.div`
   width: 100%;
-  height: 1300px;
+  height: 955px;
   position: relative;
 `;
 
